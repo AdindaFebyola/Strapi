@@ -1,0 +1,15 @@
+# File konfigurasi sensitif
+.env
+
+# Dependensi Node.js
+node_modules/
+
+# Direktori hasil build
+build/
+
+# File log
+*.log
+
+# File lock dari package manager
+package-lock.json
+yarn.lock

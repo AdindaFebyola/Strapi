@@ -1,0 +1,61 @@
+# docker-compose.yml untuk Strapi v3.6.8
+
+services:
+  strapi:
+    container_name: strapi_v3_app_service
+    # Pastikan tag ini sesuai dengan yang berhasil kamu pull atau yang tersedia
+    image: strapi/strapi:3.6.8-alpine
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: db_v3 # Nama service database
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_SSL: ${DATABASE_SSL:-false}
+      HOST: ${HOST:-0.0.0.0}
+      PORT: ${PORT:-1337}
+      APP_KEY: ${APP_KEY} # Strapi v3 menggunakan APP_KEY (singular)
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      JWT_SECRET: ${JWT_SECRET} # Strapi v3 umumnya menggunakan JWT_SECRET atau ADMIN_JWT_SECRET
+      # PUBLIC_URL: ${PUBLIC_URL}
+
+    volumes:
+      - ./strapi-v3-app-src:/srv/app # Lokasi standar di image Strapi v3
+      # Volume untuk uploads mungkin perlu disesuaikan jika path default berbeda di v3
+      # Biasanya di /srv/app/public/uploads
+      - strapi_v3_app_uploads:/srv/app/public/uploads
+    ports:
+      - "${PORT:-1337}:1337"
+    networks:
+      - strapi_v3_internal_network
+    depends_on:
+      - db_v3
+    command: strapi develop # Perintah untuk menjalankan Strapi v3 dalam mode development
+
+  db_v3: # Memberi nama berbeda untuk service DB agar tidak konflik jika ada setup v4
+    container_name: strapi_v3_db_service
+    # Menggunakan PostgreSQL 13, umumnya kompatibel baik dengan Strapi v3
+    image: postgres:13-alpine
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - strapi_v3_db_data:/var/lib/postgresql/data/
+    networks:
+      - strapi_v3_internal_network
+
+volumes:
+  strapi_v3_db_data:
+  strapi_v3_app_uploads:
+
+networks:
+  strapi_v3_internal_network:
+    driver: bridge
+    name: strapi_v3_app_net

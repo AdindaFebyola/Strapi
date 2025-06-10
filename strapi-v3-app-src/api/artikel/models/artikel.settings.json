@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "artikels",
+  "info": {
+    "name": "Artikel"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Judul": {
+      "type": "string"
+    },
+    "Isi_konten": {
+      "type": "richtext"
+    },
+    "Penulis": {
+      "type": "string"
+    }
+  }
+}
