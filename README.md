@@ -1,6 +1,6 @@
 # Proyek Akhir: Implementasi Strapi v3 dengan Docker
 
-Ini adalah proyek akhir untuk mata kuliah Administrasi Sistem yang mengimplementasikan Headless CMS Strapi v3.6.8 dan database PostgreSQL menggunakan Docker Compose.
+Proyek akhir ini untuk mata kuliah Administrasi Sistem yang mengimplementasikan Headless CMS Strapi v3.6.8 dan database PostgreSQL menggunakan Docker Compose.
 
 ## Arsitektur
 
